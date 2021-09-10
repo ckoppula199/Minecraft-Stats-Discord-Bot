@@ -15,6 +15,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+hypixel_statistics = hypixel_stats.HypixelStats()
 
 @bot.event
 async def on_ready():
@@ -38,16 +39,27 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
     await ctx.send(', '.join(dice))
 
 
-@bot.command(name='bedwars_stats', help='Gives stats for bedwars games.')
-async def bedwars_stats(ctx, username):
-    stats = hypixel_stats.get_bedwars_stats(username)
-    msg = f"you have won {stats} games of trios bedwars"
+@bot.command(name='bedwars', help='Gives stats for bedwars games.')
+async def bedwars_stats(ctx, mode, username):
+    if mode == 'solos':
+        msg = hypixel_statistics.bedwars_stats_solos(username)
+    elif mode == 'duos':
+        msg = hypixel_statistics.bedwars_stats_duos(username)
+    elif mode == 'trios':
+        msg = hypixel_statistics.bedwars_stats_trios(username)
+    elif mode == 'quads':
+        msg = hypixel_statistics.bedwars_stats_quads(username)
+    elif mode == 'practice':
+        msg = hypixel_statistics.bedwars_stats_practice(username)
+    else:
+        msg = "Usage: bedwars {mode} {username}\nmode options are: solos, duos, trios, quads and practice"
+    await ctx.send(msg)
+
+@bot.command(name="im_mister_money_bags")
+async def money_bags(ctx):
+    msg = "YO YO YO!"
     await ctx.send(msg)
 
 
 bot.run(TOKEN)
-
-
-
-
 
