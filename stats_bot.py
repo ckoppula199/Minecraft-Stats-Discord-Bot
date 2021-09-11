@@ -70,5 +70,13 @@ async def build_battle_stats(ctx, username):
     msg = hypixel_statistics.build_battle_stats(username)
     await ctx.send(msg)
 
+@bot.command(name='commands', help='Tells the user about available commands')
+async def commands(ctx):
+    msg = """COMMANDS
+bedwars {mode} {username}\nmode options are: solos, duos, trios, quads and practice\n
+build_battle {username}\n
+zombies {mode} {username}\nmode options are kills and stats"""
+    await ctx.send(msg)
+
 bot.run(TOKEN)
 

@@ -126,7 +126,21 @@ class HypixelStats:
                 'skelefish_zombie_kills_zombies', 'ender_zombie_kills_zombies', 'endermite_zombie_kills_zombies']
         msg = self.constuct_stats_message(stats, keys, zombies_data)
         return msg
-        
+
+    def zombies_general_stats(self, username):
+        uuid = self.get_uuid(username)
+        zombies_data = self.query_hypixel_api({'key': self.HYPIXEL_API_KEY, 'uuid':uuid})["player"]["stats"]["Arcade"]
+        stats = ['Best Round', 'Bullets Shot', 'Bullets Hit', 'Doors Opened', 'Windows Repaired', 'Headshots', 'Deaths', 'Times Knocked Down', 'Total Rounds Survived',
+                 'Total Kills', 'Player Revives', 'Fastest time to round 10', 'Fastest time to round 20']
+        keys = ['best_round_zombies', 'bullets_shot_zombies', 'bullets_hit_zombies', 'doors_opened_zombies', 'windows_repaired_zombies', 'headshots_zombies', 'deaths_zombies',
+                'times_knocked_down_zombies', 'total_rounds_survived_zombies', 'zombie_kills_zombies', 'players_revived_zombies', 'fastest_time_10_zombies', 'fastest_time_20_zombies']
+        msg = self.constuct_stats_message(stats, keys, zombies_data)
+        shots = zombies_data.get('bullets_shot_zombies', None)
+        hits = zombies_data.get('bullets_hit_zombies', None)
+        if shots is not None and hits is not None and hits != 0 and shots != 0:
+            accuracy = (hits / (hits + shots)) * 100
+            msg += f'Shot Accuracy: {accuracy:.2f}%\n'
+        return msg
 
     def build_battle_stats(self, username):
         uuid = self.get_uuid(username)
