@@ -61,7 +61,8 @@ async def zombies_stats(ctx, username):
 
 @bot.command(name='build_battle', help='Gives stats on the Build Battle games.')
 async def build_battle_stats(ctx, username):
-    pass
+    msg = hypixel_statistics.build_battle_stats(username)
+    await ctx.send(msg)
 
 bot.run(TOKEN)
 

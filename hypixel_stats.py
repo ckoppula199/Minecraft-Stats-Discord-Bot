@@ -108,8 +108,20 @@ class HypixelStats:
     def zombies_stats(self):
         pass
 
-    def build_battle_stats(self):
-        pass
+    def build_battle_stats(self, username):
+        uuid = self.get_uuid(username)
+        build_battle_data = self.query_hypixel_api({'key': self.HYPIXEL_API_KEY, 'uuid':uuid})["player"]["stats"]["BuildBattle"]
+        stats = ['Solo Wins', 'Team Wins', 'Guess the Build Wins', 'Correct Guesses', 'Total Votes Cast', 'Games Played']
+        keys = ['wins_solo_normal', 'wins_teams_normal', 'wins_guess_the_build', 'correct_guesses', 'total_votes', 'games_played']
+        msg = ''
+        for stat, key in zip(stats, keys):
+            try:
+                line = f'{stat}: {build_battle_data[key]}\n'
+                msg += line
+            except KeyError:
+                line = f'{stat}: 0\n'
+                msg += line
+        return msg
 
 # Used for debugging the above class
 if __name__ == "__main__":
