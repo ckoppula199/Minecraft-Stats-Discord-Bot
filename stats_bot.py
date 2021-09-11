@@ -55,11 +55,13 @@ async def bedwars_stats(ctx, mode, username):
         msg = "Usage: bedwars {mode} {username}\nmode options are: solos, duos, trios, quads and practice"
     await ctx.send(msg)
 
-@bot.command(name="im_mister_money_bags")
-async def money_bags(ctx):
-    msg = "YO YO YO!"
-    await ctx.send(msg)
+@bot.command(name='zombies', help='Gives stats for Zombies arcade game.')
+async def zombies_stats(ctx, username):
+    pass
 
+@bot.command(name='build_battle', help='Gives stats on the Build Battle games.')
+async def build_battle_stats(ctx, username):
+    pass
 
 bot.run(TOKEN)
 
