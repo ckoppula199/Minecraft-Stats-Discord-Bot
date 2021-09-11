@@ -56,8 +56,14 @@ async def bedwars_stats(ctx, mode, username):
     await ctx.send(msg)
 
 @bot.command(name='zombies', help='Gives stats for Zombies arcade game.')
-async def zombies_stats(ctx, username):
-    pass
+async def zombies_stats(ctx, mode, username):
+    if mode == 'kills':
+        msg = hypixel_statistics.zombies_kills_stats(username)
+    elif mode == 'stats':
+        msg = hypixel_statistics.zombies_general_stats(username)
+    else:
+        msg = 'Usage: zombies {mode} {username}\nMode options are kills and stats'
+    await ctx.send(msg)
 
 @bot.command(name='build_battle', help='Gives stats on the Build Battle games.')
 async def build_battle_stats(ctx, username):

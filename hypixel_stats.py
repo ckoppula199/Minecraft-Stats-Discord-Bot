@@ -105,22 +105,35 @@ class HypixelStats:
         msg = json.dumps(bedwars_data, indent=4)
         return msg
 
-    def zombies_stats(self):
-        pass
+    def constuct_stats_message(self, stats, keys, data):
+        msg = ''
+        for stat, key in zip(stats, keys):
+            try:
+                line = f'{stat}: {data[key]}\n'
+                msg += line
+            except KeyError:
+                line = f'{stat}: 0\n'
+                msg += line
+        return msg
+
+    def zombies_kills_stats(self, username):
+        uuid = self.get_uuid(username)
+        zombies_data = self.query_hypixel_api({'key': self.HYPIXEL_API_KEY, 'uuid':uuid})["player"]["stats"]["Arcade"]
+        stats = ['Basic Zombie Kills', 'Blaze Zombie Kills', 'Fire Zombie Kills', 'Magma Zombie Kills', 'Magma Cube Zombie Kills', 'Pig Zombie Kills', 'TNT Zombie Kills', 'TNT Baby Zombie Kills',
+                 'Wolf Zombie Kills', 'Guardian Zombie Kills', 'Empowered Zombie Kills', 'Silverfish Zombie Kills', 'Skeleton Zombie Kills', 'Ender Zombie Kills', 'Endermite Zombie Kills']
+        keys = ['basic_zombie_kills_zombies', 'blaze_zombie_kills_zombies', 'fire_zombie_kills_zombies', 'magma_zombie_kills_zombies', 'magma_cube_zombie_kills_zombies', 'pig_zombie_zombie_kills_zombies',
+                'tnt_zombie_kills_zombies', 'tnt_baby_zombie_kills_zombies', 'wolf_zombie_kills_zombies', 'guardian_zombie_kills_zombies', 'empowered_zombie_kills_zombies', 'silverfish_zombie_kills_zombies',
+                'skelefish_zombie_kills_zombies', 'ender_zombie_kills_zombies', 'endermite_zombie_kills_zombies']
+        msg = self.constuct_stats_message(stats, keys, zombies_data)
+        return msg
+        
 
     def build_battle_stats(self, username):
         uuid = self.get_uuid(username)
         build_battle_data = self.query_hypixel_api({'key': self.HYPIXEL_API_KEY, 'uuid':uuid})["player"]["stats"]["BuildBattle"]
         stats = ['Solo Wins', 'Team Wins', 'Guess the Build Wins', 'Correct Guesses', 'Total Votes Cast', 'Games Played']
         keys = ['wins_solo_normal', 'wins_teams_normal', 'wins_guess_the_build', 'correct_guesses', 'total_votes', 'games_played']
-        msg = ''
-        for stat, key in zip(stats, keys):
-            try:
-                line = f'{stat}: {build_battle_data[key]}\n'
-                msg += line
-            except KeyError:
-                line = f'{stat}: 0\n'
-                msg += line
+        msg = self.constuct_stats_message(stats, keys, build_battle_data)
         return msg
 
 # Used for debugging the above class
